@@ -1,5 +1,7 @@
 ---
 
+# run postgres_letsencrypt first
+
 - name: postgres for Project R
   hosts: postgres
   become: true
@@ -9,6 +11,8 @@
     postgresql_admin_user: "postgres"
     postgresql_varlib_directory_name: "postgresql"
     postgresql_listen_addresses: '*'
+
+    postgresql_ssl: on
 
     postgresql_databases:
       - name: projectr

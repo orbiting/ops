@@ -2,6 +2,10 @@
 
 hostname: db1.staging
 
+# letsencrypt
+letsencrypt_cert_domains:
+  - db1.staging.project-r.construction
+
 #zsh
 users:
   - username: patte
@@ -19,6 +23,8 @@ users:
         - postgres
 
 #postgres
+postgresql_ssl_cert_file: /etc/letsencrypt/live/db1.staging.project-r.construction/cert.pem
+postgresql_ssl_key_file: /etc/letsencrypt/live/db1.staging.project-r.construction/privkey.pem
 # IP: barman
 postgresql_pg_hba_custom:
   - type: host

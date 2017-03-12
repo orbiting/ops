@@ -14,6 +14,7 @@
 
 - include: playbooks/k8s.yml
 
+- include: playbooks/postgres/postgres_letsencrypt.yml
 - include: playbooks/postgres/postgres.yml
 
 - include: playbooks/postgres/barman.yml
