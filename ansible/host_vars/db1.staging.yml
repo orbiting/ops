@@ -37,6 +37,11 @@ postgresql_pg_hba_custom:
     user: barman
     address: "159.100.253.185/32"
     method: "trust"
+  - type: host
+    database: projectr
+    user: projectr
+    address: "0.0.0.0/0"
+    method: "password"
 
 postgresql_archive_command: 'rsync -ap -e "ssh -o StrictHostKeyChecking=no" --bwlimit=1000 %p barman@barman.project-r.construction:/var/lib/barman/db1.staging/incoming/%f'
 
