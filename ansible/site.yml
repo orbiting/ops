@@ -9,15 +9,14 @@
 
 - include: playbooks/all/sshd.yml
 
-#- include: playbooks/misc/google-authenticator.yml
-#- include: playbooks/misc/automatic-updates.yml
+- include: playbooks/misc/google-authenticator.yml
+- include: playbooks/misc/automatic-updates.yml
 
-#- include: playbooks/misc/docker.yml
 - include: playbooks/k8s.yml
 
-#- include: playbooks/postgres/postgres.yml
+- include: playbooks/postgres/postgres.yml
 
-#- include: playbooks/postgres/barman.yml
+- include: playbooks/postgres/barman.yml
 
 - include: playbooks/all/zsh.yml
 
