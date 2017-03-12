@@ -1,0 +1,36 @@
+nginx:
+  image: nginx:latest
+  restart: always
+  ports:
+    - "80:80"
+    - "443:443"
+  links:
+    - node
+  volumes:
+    - /docker/etc/survey/nginx/conf.d/:/etc/nginx/conf.d
+    - /etc/letsencrypt/:/etc/letsencrypt:ro
+node:
+  image: registry.git.project-r.construction/earlybirds/survey:latest
+  restart: always
+  expose:
+    - "8002"
+  links:
+    - mongo
+  environment:
+    MONGO_URL: mongodb://mongo:27017/node
+mongo:
+  image: mongo:latest
+  restart: always
+  expose:
+    - "27017"
+  volumes:
+    - /docker/data/survey/db:/data/db
+#watchtower:
+#  image: centurylink/watchtower:latest
+#  restart: always
+#  environment:
+#    REPO_USER: watchtower
+#    REPO_PASS:
+#    REPO_EMAIL: patrick.recher@project-r.construction
+#  volumes:
+#    - /var/run/docker.sock:/var/run/docker.sock

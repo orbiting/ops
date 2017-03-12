@@ -1,0 +1,22 @@
+#!/bin/bash
+
+if [ -z "$1" ]
+  then
+    echo "supply hostname as first argument"
+    exit 1
+fi
+
+HOSTNAME=$1
+
+# forward /tmp/docker_$HOSTNAME.sock to remote docker.sock
+#http://stackoverflow.com/questions/2241063/bash-script-to-setup-a-temporary-ssh-tunnel/15198031#15198031
+ssh -M -S ssh_ctrl_socket_$HOSTNAME -fnNT -L /tmp/docker_$HOSTNAME.sock:/var/run/docker.sock $HOSTNAME
+#ssh -S ssh_ctrl_socket_$HOSTNAME -O check $HOSTNAME
+
+echo " "
+echo export DOCKER_HOST="unix:///tmp/docker_$HOSTNAME.sock"
+echo "#"
+echo "# Run this command to configure your shell:"
+echo "# eval \$(connect_to_docker $HOSTNAME)"
+echo "# Run this command to disconnect:"
+echo "# disconnect_from_docker $HOSTNAME"

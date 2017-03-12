@@ -1,0 +1,25 @@
+---
+
+hostname: '{{ inventory_hostname }}'
+
+#zsh
+users:
+  - username: patte
+    oh_my_zsh:
+      theme: r_production
+      plugins:
+        - git
+        - docker
+  - username: root
+    oh_my_zsh:
+      theme: r_production
+
+
+#docker
+pip_install_pip: false
+pip_install_setuptools: false
+pip_install_docker_py: false
+pip_install_docker_compose: false
+
+docker_users:
+  - username: patte

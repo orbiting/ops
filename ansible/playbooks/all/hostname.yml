@@ -1,0 +1,16 @@
+---
+
+- name: hostnames for Project R
+  hosts: all
+  become: true
+
+  tasks:
+    - name: set hostname
+      hostname:
+        name: '{{ hostname }}'
+
+    - name: set hostname in /etc/hosts
+      lineinfile:
+        dest: /etc/hosts
+        regexp: '^127\.0\.1\.1'
+        line: '127.0.1.1 {{ hostname }}'

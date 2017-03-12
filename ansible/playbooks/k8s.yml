@@ -1,0 +1,32 @@
+---
+
+- name: k8s for Project R
+  hosts: k8s
+  become: true
+
+  tasks:
+    - name: install dependencies
+      apt: pkg={{item}} state=installed
+      with_items:
+        - apt-transport-https
+
+    - name: install packages.cloud.google.com apt key
+      apt_key:
+        url: "https://packages.cloud.google.com/apt/doc/apt-key.gpg"
+        state: present
+
+    - name: add apt.kubernetes.io repo
+      apt_repository:
+        repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
+        state: present
+
+    - name: Update repositories cache and install kubeadm deps
+      apt:
+        update_cache: yes
+      apt: pkg={{item}} state=installed
+      with_items:
+        - docker.io
+        - kubelet
+        - kubeadm
+        - kubectl
+        - kubernetes-cni

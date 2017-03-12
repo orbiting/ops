@@ -1,0 +1,29 @@
+---
+- name: get a TLS certificate from letsencrypt
+  hosts: letsencrypt
+  remote_user: "{{remote_user}}"
+  become: 'true'
+
+  tasks:
+    - name: mkdir
+      file: path=/opt/letsencrypt state=directory
+
+    - name: get letsencrypt
+      git: repo=https://github.com/letsencrypt/letsencrypt
+        dest=/opt/letsencrypt
+        version=HEAD
+
+    - name: run letsencrypt
+      shell: ./letsencrypt-auto certonly --standalone --keep-until-expiring --rsa-key-size 4096 --email {{email}} --domains {{domains}} --agree-tos --non-interactive --expand
+      args:
+        chdir: /opt/letsencrypt
+      register: letsencrypt
+
+    - debug: msg="{{ letsencrypt.stdout }}"
+
+    - name: Creates renew cronjob
+      cron: minute="0" hour="3/15" weekday="*"
+        name="Renew letsencrypt (twice a day)"
+        cron_file="letsencrypt_renew"
+        user="root"
+        job="/opt/letsencrypt renew --agree-tos"

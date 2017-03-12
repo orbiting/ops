@@ -1,0 +1,19 @@
+nginx:
+  image: nginx:latest
+  restart: always
+  ports:
+    - "80:80"
+    - "443:443"
+  links:
+    - rancher
+  volumes:
+    - /docker/etc/rancher/nginx/conf.d/:/etc/nginx/conf.d
+    - /etc/letsencrypt/:/etc/letsencrypt:ro
+    - /docker/data/rancher/nginx/var/log/nginx:/var/log/nginx
+rancher:
+  image: rancher/server:stable
+  restart: always
+  expose:
+    - "8080"
+  volumes:
+    - /docker/data/rancher/var/lib/mysql:/var/lib/mysql

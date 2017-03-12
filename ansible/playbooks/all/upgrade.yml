@@ -1,0 +1,10 @@
+---
+# must be started as root
+
+- name: upgrade Project R
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Update APT and upgrade dist
+      apt: upgrade=dist update_cache=yes

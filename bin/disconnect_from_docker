@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [ -z "$1" ]
+  then
+    echo "supply hostname as first argument"
+    exit 1
+fi
+
+HOSTNAME=$1
+
+export DOCKER_HOST=/dev/null
+
+ssh -S ssh_ctrl_socket_$HOSTNAME -O exit $HOSTNAME
+
+rm -rf /tmp/docker_$HOSTNAME.sock

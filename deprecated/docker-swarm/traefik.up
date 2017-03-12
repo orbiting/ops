@@ -1,0 +1,39 @@
+#https://dkristian.co/traefik-with-docker/
+
+#docker \
+#    volume create \
+#    --name acme
+
+docker \
+    network create \
+    --driver overlay \
+    traefik-net
+
+#    --label traefik.backend=traefik \
+#    --label traefik.frontend.rule=Host:traefik.${TRAEFIK_DOMAIN} \
+#    --label traefik.port=8080 \
+docker \
+    service create \
+    --name traefik \
+    --network traefik-net \
+    --publish 80:80 \
+    --publish 443:443 \
+    --publish 8080:8080 \
+    --mount type=bind,source=/var/run/docker.sock,target=/var/run/docker.sock \
+    --mount src=acme,dst="/etc/traefik/acme" \
+    traefik:latest \
+    --docker \
+    --docker.swarmmode \
+    --docker.domain="${TRAEFIK_DOMAIN}" \
+    --docker.watch \
+    --entryPoints='Name:https Address::443 TLS' \
+    --entryPoints='Name:http Address::80 Redirect.EntryPoint:https' \
+    --defaultEntryPoints=http,https \
+    --acme.entrypoint=https \
+    --acme=true \
+    --acme.domains="${TRAEFIK_DOMAIN}" \
+    --acme.email="${TRAEFIK_EMAIL}" \
+    --acme.ondemand=true  \
+    --acme.onhostrule=true \
+    --acme.storage=/etc/traefik/acme/acme.json \
+    --web

@@ -1,0 +1,11 @@
+nginx:
+  image: nginx:latest
+  restart: always
+  ports:
+    - "80:80"
+    - "443:443"
+  volumes:
+    - /docker/etc/styleguide/nginx/conf.d/:/etc/nginx/conf.d
+    - /etc/letsencrypt/:/etc/letsencrypt:ro
+    - /home/ubuntu/www:/var/www/html
+    - /docker/data/styleguide/nginx/var/log/nginx:/var/log/nginx

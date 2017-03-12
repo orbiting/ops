@@ -1,0 +1,9 @@
+docker service create \
+  --replicas=1 \
+  --name whoami \
+  --network traefik-net \
+  --label traefik.port=80 \
+  --label traefik.frontend.rule=Host:whoami.${TRAEFIK_DOMAIN} \
+  --label traefik.backend.loadbalancer.sticky=true \
+  --label traefik.backend=whoami \
+  emilevauge/whoami

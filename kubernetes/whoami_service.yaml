@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: whoami
+spec:
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    app: whoami
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: whoami
+spec:
+  rules:
+  - host: whoamii.project-r.construction
+    http:
+      paths:
+      - backend:
+          serviceName: whoami
+          servicePort: 80

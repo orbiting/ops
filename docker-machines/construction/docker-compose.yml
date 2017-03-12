@@ -1,0 +1,38 @@
+nginx:
+  image: nginx:latest
+  restart: always
+  ports:
+    - "80:80"
+    - "443:443"
+  links:
+    - node
+  volumes:
+    - /docker/etc/construction/nginx/conf.d/:/etc/nginx/conf.d
+    - /etc/letsencrypt/:/etc/letsencrypt:ro
+    - /docker/data/construction/nginx/var/log/nginx:/var/log/nginx
+#goaccess:
+#  image: joelchen/goaccess
+#  restart: always
+#  ports:
+#    - "8080:80"
+#  volumes:
+#    - /docker/data/construction/nginx/var/log/nginx:/var/log/nginx
+node:
+  image: registry.git.project-r.construction/production/construction:latest
+  restart: always
+  expose:
+    - "4000"
+  links:
+    - mongo
+  environment:
+    - MONGO_URL
+    - MAIL_URL
+    - MAILGUN_API_KEY
+    - MAILGUN_LIST
+mongo:
+  image: mongo:latest
+  restart: always
+  expose:
+    - "27017"
+  volumes:
+    - /docker/data/construction/db:/data/db

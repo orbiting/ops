@@ -1,0 +1,31 @@
+galaxy_info:
+  author: John Freeman
+  description: Role for installing and configuring oh-my-zsh.
+  company: GantSign Ltd.
+  license: MIT
+  min_ansible_version: 1.9
+  platforms:
+    - name: EL
+      versions:
+        - 7
+    - name: Fedora
+      versions:
+        - 25
+    # Galaxy doesn't support version 42.2 yet: "Invalid platform: opensuse-42.2 (skipping)"
+    # - name: opensuse
+    #   versions:
+    #     - 42.2
+    - name: Ubuntu
+      versions:
+        - trusty
+        - wily
+        - xenial
+    - name: Debian
+      versions:
+        - jessie
+        - wheezy
+  galaxy_tags:
+    - ohmyzsh
+    - zsh
+    - shell
+dependencies: []

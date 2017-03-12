@@ -1,0 +1,71 @@
+nginx:
+  image: nginx:latest
+  restart: always
+  links:
+    - nextcloud
+#    - collabora
+  ports:
+    - "80:80"
+    - "443:443"
+  volumes:
+    - /docker/etc/nextcloud/nginx/conf.d/:/etc/nginx/conf.d
+    - /etc/letsencrypt/:/etc/letsencrypt:ro
+
+#nextcloud:
+#  image: greyltc/nextcloud:latest
+#  restart: always
+#  links:
+#    - postgres
+#  environment:
+#    START_MYSQL: 'false'
+#    TARGET_SUBDIR: /
+#    ALLOW_INSECURE: 'true'
+#  volumes:
+#    - /docker/data/nextcloud/nextcloud/config:/usr/share/webapps/nextcloud/config
+#    - /docker/data/nextcloud/nextcloud/data:/usr/share/webapps/nextcloud/data
+#    - /docker/data/nextcloud/nextcloud/apps:/usr/share/webapps/nextcloud/apps
+
+nextcloud:
+  image: wonderfall/nextcloud
+  restart: always
+  links:
+    - postgres
+  expose:
+    - "8888"
+  environment:
+    - UID=33
+    - GID=33
+    - UPLOAD_MAX_SIZE=10G
+    - APC_SHM_SIZE=128M
+    - OPCACHE_MEM_SIZE=128
+    - REDIS_MAX_MEMORY=64mb
+    - CRON_PERIOD=15m
+    - TZ=Europe/Berlin
+    - DB_TYPE=postgres
+    - DB_NAME=nextcloud
+    - DB_USER=nextcloud
+    - DB_PASSWORD=nextcloud
+    - DB_HOST=postgres
+  volumes:
+    - /docker/data/nextcloud/nextcloud/config:/config
+    - /docker/data/nextcloud/nextcloud/apps:/apps2
+    - /docker/data/nextcloud/nextcloud/data:/data
+
+postgres:
+  image: postgres:9.5
+  restart: always
+  environment:
+    - POSTGRES_PASSWORD=nextcloud
+    - POSTGRES_USER=nextcloud
+  volumes:
+    - /docker/data/nextcloud/postgres/data:/var/lib/postgresql/data
+
+#collabora:
+#  image: collabora/code:latest
+#  restart: always
+#  ports:
+#    - "9980:9980"
+#  environment:
+#    domain: 'nextcloud.project-r.construction'
+#  cap_add:
+#    - MKNOD

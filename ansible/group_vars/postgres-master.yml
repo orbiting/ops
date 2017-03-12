@@ -1,0 +1,7 @@
+---
+
+postgresql_max_wal_senders: 10
+postgresql_max_replication_slots: 2
+postgresql_wal_level: replica
+postgresql_hot_standby: on
+postgresql_archive_mode: on

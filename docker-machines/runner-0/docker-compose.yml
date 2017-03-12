@@ -1,0 +1,7 @@
+runner:
+  image: gitlab/gitlab-runner:latest
+  restart: always
+  privileged: true
+  volumes:
+    - /docker/data/gitlab-runner/config:/etc/gitlab-runner
+    - /var/run/docker.sock:/var/run/docker.sock

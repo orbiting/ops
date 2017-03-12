@@ -1,0 +1,13 @@
+---
+# must be started as root
+
+- name: commons for Project R
+  hosts: all
+  become: true
+
+  tasks:
+    - name: install dependencies
+      apt: pkg={{item}} state=installed
+      with_items:
+        - ntp
+        - htop

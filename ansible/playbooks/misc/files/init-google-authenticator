@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo "Generate a timed-based, no reuse, rate-limited (3 logins per 30 seconds) with one concurrently valid code for user"
+google-authenticator -t -f -d --qr-mode=ANSI -r 3 -R 30 -w 1

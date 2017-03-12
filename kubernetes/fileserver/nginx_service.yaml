@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: fileserver
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: fileserver
+---
+apiVersion: extensions/v1beta1
+kind: Ingres
+metadata:
+  name: fileserver
+spec:
+  rules:
+  - host: files.project-r.construction
+    http:
+      paths:
+      - backend:
+          serviceName: fileserver
+          servicePort: 80

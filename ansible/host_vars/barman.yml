@@ -1,0 +1,34 @@
+---
+
+hostname: barman
+
+#zsh
+users:
+  - username: patte
+    oh_my_zsh:
+      theme: r_production
+      plugins:
+        - git
+  - username: root
+    oh_my_zsh:
+      theme: r_production
+  - username: barman
+    oh_my_zsh:
+      theme: r_production
+      plugins:
+        - postgres
+
+#barman
+barman_home: /var/lib/barman
+barman_ssh_key_file: files/id_rsa_barman
+barman_ssh_pub_key_file: files/id_rsa_barman.pub
+barman_maintenance_schedule: '*/2 * * * *'
+barman_upstreams:
+  - name: "db1"
+    hostname: "db1.project-r.construction"
+    pub_key: "{{ lookup('file', 'files/id_rsa_db1.pub') }}"
+    retention_policy: "RECOVERY WINDOW OF 7 days"
+  - name: "db1.staging"
+    hostname: "db1.staging.project-r.construction"
+    pub_key: "{{ lookup('file', 'files/id_rsa_db1.staging.pub') }}"
+    retention_policy: "RECOVERY WINDOW OF 3 days"

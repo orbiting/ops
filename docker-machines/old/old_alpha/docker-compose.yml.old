@@ -1,0 +1,10 @@
+nginx:
+  image: nginx:latest
+  restart: always
+  ports: 
+    - "80:80"
+    - "443:443"
+  volumes:
+    - /docker/etc/alpha/nginx/conf.d/:/etc/nginx/conf.d
+    - /etc/letsencrypt/:/etc/letsencrypt:ro
+    - /docker/data/www/:/data/www:ro

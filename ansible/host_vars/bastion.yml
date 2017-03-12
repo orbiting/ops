@@ -1,0 +1,14 @@
+---
+
+hostname: bastion
+
+#zsh
+users:
+  - username: patte
+    oh_my_zsh:
+      theme: r_nonproduction
+      plugins:
+        - git
+  - username: root
+    oh_my_zsh:
+      theme: r_nonproduction

@@ -1,0 +1,58 @@
+# We run this with hostnetwork as a workaround for
+# hostPort not beeing available with CNI networking
+# https://github.com/kubernetes/kubernetes/issues/23920
+# https://github.com/kubernetes/kubernetes/issues/31307
+# https://github.com/containernetworking/cni/issues/46
+kind: DaemonSet
+apiVersion: extensions/v1beta1
+metadata:
+  name: traefik-ingress-controller
+  labels:
+    k8s-app: traefik-ingress-lb
+    kubernetes.io/cluster-service: "true"
+spec:
+  selector:
+    matchLabels:
+      k8s-app: traefik-ingress-lb
+  template:
+    metadata:
+      labels:
+        k8s-app: traefik-ingress-lb
+        name: traefik-ingress-lb
+    spec:
+      #
+      hostNetwork: true
+      #
+      nodeSelector:
+        role: edge-router
+      terminationGracePeriodSeconds: 60
+      volumes:
+        - name: acme
+          hostPath:
+            path: /k8s/traefik/acme/
+        - name: config
+          configMap:
+            name: traefik-conf
+      containers:
+      - image: traefik
+        name: traefik-ingress-lb
+        imagePullPolicy: Always
+        volumeMounts:
+          - mountPath: "/acme/"
+            name: "acme"
+          - mountPath: "/config"
+            name: "config"
+        args:
+        - --web
+        - --kubernetes
+        - --configFile=/config/traefik.toml
+        #- --logLevel=DEBUG
+#       ports:
+#       - containerPort: 80
+#       ports:
+#       - containerPort: 80
+#         hostPort: 80
+#       - containerPort: 443
+#         hostPort: 443
+#       - containerPort: 8080
+#         hostPort: 8080

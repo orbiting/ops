@@ -1,0 +1,50 @@
+---
+
+- name: zsh for Project R
+  hosts: all
+  become: true
+
+# must be provided for each host
+# see host_vars
+#  vars:
+#    users:
+#      - username: root
+#        oh_my_zsh:
+#          theme: robbyrussell
+#          plugins:
+#            - git
+#      - username: patte
+#        oh_my_zsh:
+#          theme: robbyrussell
+#          plugins:
+#            - git
+
+  roles:
+    - role: gantsign.oh-my-zsh
+
+  tasks:
+    - name: create custom themes directory
+      file:
+        state: directory
+        path: '~{{ item.username }}/.oh-my-zsh/custom/themes'
+        owner: '{{ item.username }}'
+        group: '{{ item.username }}'
+      with_items: '{{ users }}'
+
+    - name: copy Project R zsh theme
+      copy:
+        src: files/r_nonproduction.zsh-theme
+        dest: '~{{ item.username }}/.oh-my-zsh/custom/themes/r_nonproduction.zsh-theme'
+        owner: '{{ item.username }}'
+        group: '{{ item.username }}'
+        mode: "u=rwx,g=rwx,o=rx"
+      with_items: '{{ users }}'
+
+    - name: copy Project R zsh theme
+      copy:
+        src: files/r_production.zsh-theme
+        dest: '~{{ item.username }}/.oh-my-zsh/custom/themes/r_production.zsh-theme'
+        owner: '{{ item.username }}'
+        group: '{{ item.username }}'
+        mode: "u=rwx,g=rwx,o=rx"
+      with_items: '{{ users }}'

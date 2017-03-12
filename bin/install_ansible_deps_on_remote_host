@@ -1,0 +1,12 @@
+#!/bin/bash
+if [ -z "$1" ]
+  then
+    echo "supply hostname as first argument"
+    exit 1
+fi
+
+HOST=$1
+USER=root
+
+# instal ansible's dependencies
+ansible $HOST -i "$HOST," -vv -u $USER -m raw -a "sudo apt-get --yes install python2.7 python-simplejson"

@@ -1,0 +1,15 @@
+docker service create \
+  --name cms-draft \
+  --replicas=1 \
+  --with-registry-auth \
+  --env NODE_ENV=production \
+  --env PORT=${CMS_DRAFT_PORT} \
+  --env SESSION_SECRET=${CMS_DRAFT_SESSION_SECRET} \
+  --env GITHUB_CLIENT_ID=${CMS_DRAFT_GITHUB_CLIENT_ID} \
+  --env GITHUB_CLIENT_SECRET=${CMS_DRAFT_GITHUB_CLIENT_SECRET} \
+  --network traefik-net \
+  --label traefik.port=4000 \
+  --label traefik.backend.loadbalancer.sticky=true \
+  --label traefik.frontend.rule=Host:cms-draft.${TRAEFIK_DOMAIN} \
+  --label traefik.backend=cms-draft \
+  registry.git.project-r.construction/earlybirds/cms-draft

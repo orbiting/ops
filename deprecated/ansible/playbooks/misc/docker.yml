@@ -1,0 +1,17 @@
+---
+
+- name: docker for Project R
+  hosts: docker
+  become: true
+
+  roles:
+    - role: angstwad.docker_ubuntu
+
+  tasks:
+    - name: adding users to docker group
+      user:
+        name: '{{ item.username }}'
+        groups: docker
+        append: yes
+      with_items: '{{ docker_users }}'
+

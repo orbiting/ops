@@ -1,0 +1,67 @@
+---
+
+- name: postgres for Project R
+  hosts: postgres
+  become: true
+
+  vars:
+    postgresql_version: 9.6
+    postgresql_admin_user: "postgres"
+    postgresql_varlib_directory_name: "postgresql"
+    postgresql_listen_addresses: '*'
+
+    postgresql_databases:
+      - name: projectr
+        owner: projectr
+
+    postgresql_users:
+      - name: projectr
+        pass: projectr
+      - name: barman
+        pass: barman
+      - name: streaming_barman
+        pass: streaming_barman
+
+    postgresql_user_privileges:
+      - name: projectr
+        db: projectr
+        priv: "ALL"
+      - name: barman
+        role_attr_flags: "SUPERUSER"
+      - name: streaming_barman
+        role_attr_flags: "REPLICATION"
+
+  roles:
+    - role: ANXS.postgresql
+
+  tasks:
+    - name: creates postgres ssh directory
+      file:
+        path="/var/lib/{{ postgresql_varlib_directory_name }}/.ssh"
+        state=directory
+        owner="{{ postgresql_admin_user }}"
+        group="{{ postgresql_admin_user }}"
+
+    - name: authorize barman
+      authorized_key:
+        user: "{{ postgresql_admin_user }}"
+        state: present
+        key: "{{ lookup('file', 'id_rsa_barman.pub') }}"
+        path: "/var/lib/{{ postgresql_varlib_directory_name }}/.ssh/authorized_keys"
+        manage_dir: False
+
+    - name: copy ssh key
+      copy:
+        src={{ postgresql_ssh_key_file }}
+        dest="/var/lib/{{ postgresql_varlib_directory_name }}/.ssh/id_rsa"
+        owner="{{ postgresql_admin_user }}"
+        group="{{ postgresql_admin_user }}"
+        mode=0600
+
+    - name: copy ssh pub key
+      copy:
+        src={{ postgresql_ssh_pub_key_file }}
+        dest="/var/lib/{{ postgresql_varlib_directory_name }}/.ssh/id_rsa.pub"
+        owner="{{ postgresql_admin_user }}"
+        group="{{ postgresql_admin_user }}"
+        mode=0644

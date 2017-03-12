@@ -1,0 +1,24 @@
+---
+# must be started as root
+
+- name: users for Project R
+  hosts: all
+  remote_user: root
+
+  tasks:
+    - name: install dependencies
+      apt: pkg={{item}} state=installed
+      with_items:
+        - sudo
+
+    - name: ensure all users exist
+      user: name={{item.name}} groups=sudo append=yes
+      with_items: '{{sudo_users}}'
+
+    - name: authorize ssh keys
+      authorized_key: user={{ item.name }} key={{ item.key }}
+      with_items: '{{sudo_users}}'
+
+    - name: allow members of group admin to execute any command without a password
+      lineinfile: "dest=/etc/sudoers state=present regexp='^%sudo' line='%sudo ALL=(ALL:ALL) NOPASSWD: ALL' validate='visudo -cf %s'"
+

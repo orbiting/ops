@@ -1,0 +1,6 @@
+---
+
+sudo_users:
+  - name: patte
+    key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHpipborwnnIhAaPTA03P7YoxkEJu2EvobHOLdfX4mGCMsvR7C6o6nwrQKfpIvv6g7Y/hTCzvvnWOFyPCbmX+R5ZIUNMvfZDj3E7BYxtRk6S0L/30jzqLztBx79KNPh0i6CvaWIJkZiwC3Ra1QNzXNWFfx3PYzoSsWFZSlc5WumS5PjZJZWucHwFQfd1l+dTa+D2z3zI6sb6cGokjtzA7LfR1jih5Zt9INUsOwA2+TMRFpHi03josil2jzSnCNTrIAkwY6syAJAXMDZjak4FRenJtgpp267wzcJpIUdgKmBx8Zd9ScqEC4lau+OQD3qAJhSLbFN16LOo/TnFIC4a8J patrick.recher@project-r.construction"
+    shell: "/usr/bin/zsh"

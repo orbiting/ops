@@ -1,0 +1,11 @@
+[docker-managers]
+docker-manager-[0:2]
+
+[docker-workers]
+docker-worker-0
+
+[docker:children]
+docker-managers
+docker-workers
+
+; vim:filetype=dosini

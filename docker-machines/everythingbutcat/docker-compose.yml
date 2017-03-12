@@ -1,0 +1,27 @@
+nginx:
+  image: nginx:latest
+  restart: always
+  ports: 
+    - "80:80"
+    - "443:443"
+  links:
+    - meteor
+  volumes:
+    - /docker/etc/everythingbutcat/nginx/conf.d/:/etc/nginx/conf.d
+    - /etc/letsencrypt/:/etc/letsencrypt:ro
+meteor:
+  image: registry.d.patpat.org/everythingbutcat:0.0.3
+  restart: always
+  expose:
+    - "3000"
+  links:
+    - mongo
+  environment:
+    MONGO_URL: mongodb://mongo:27017/meteor
+mongo:
+  image: mongo:latest
+  restart: always
+  expose:
+    - "27017"
+  volumes:
+    - /docker/data/everythingbutcat/db:/data/db

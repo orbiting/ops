@@ -1,0 +1,2 @@
+docker service rm traefik
+docker network rm traefik-net

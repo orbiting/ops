@@ -1,0 +1,3 @@
+ansible-galaxy install jnv.unattended-upgrades
+ansible-galaxy install ANXS.postgresql
+ansible-galaxy install gantsign.oh-my-zsh

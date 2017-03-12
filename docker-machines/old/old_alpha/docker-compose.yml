@@ -1,0 +1,28 @@
+nginx:
+  image: nginx:latest
+  restart: always
+  ports: 
+    - "80:80"
+    - "443:443"
+  links:
+    - meteor
+  volumes:
+    - /docker/etc/alpha/nginx/conf.d/:/etc/nginx/conf.d
+    - /etc/letsencrypt/:/etc/letsencrypt:ro
+    - /docker/data/www/:/data/www:ro
+meteor:
+  image: registry.d.patpat.org/alpha-projr:0.0.6
+  restart: always
+  expose:
+    - "3000"
+  links:
+    - mongo
+  environment:
+    MONGO_URL: mongodb://mongo:27017/meteor
+mongo:
+  image: mongo:latest
+  restart: always
+  expose:
+    - "27017"
+  volumes:
+    - /docker/data/alpha/db:/data/db

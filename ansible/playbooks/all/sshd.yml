@@ -1,0 +1,27 @@
+- name: secure sshd
+  hosts: all
+  become: true
+
+  tasks:
+    - name: install dependencies
+      apt: pkg={{item}} state=installed
+      with_items:
+        - fail2ban
+
+    - name: deny password authentication
+      lineinfile: dest=/etc/ssh/sshd_config
+        regexp=^PasswordAuthentication
+        line="PasswordAuthentication no"
+        state=present
+      notify: restart ssh
+
+    - name: deny root login
+      lineinfile: dest=/etc/ssh/sshd_config
+        regexp=^PermitRootLogin
+        line="PermitRootLogin no"
+        state=present
+      notify: restart ssh
+
+  handlers:
+    - name: restart ssh
+      service: name=ssh state=restarted

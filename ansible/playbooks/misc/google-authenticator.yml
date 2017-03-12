@@ -1,0 +1,57 @@
+---
+
+- name: protect accounts with time-based one-time passwords
+  hosts: google-authenticator
+  become: true
+
+  tasks:
+    - name: install dependencies
+      apt: pkg={{item}} state=installed
+      with_items:
+        - libpam-google-authenticator
+
+    - name: Update sshd config to deny password authentication
+      lineinfile: dest=/etc/ssh/sshd_config
+        regexp=^PasswordAuthentication
+        line="PasswordAuthentication no"
+        state=present
+      notify: restart ssh
+
+    - name: Update sshd config to enable challenge responses
+      lineinfile: dest=/etc/ssh/sshd_config
+        regexp=^ChallengeResponseAuthentication
+        line="ChallengeResponseAuthentication yes"
+        state=present
+      notify: restart ssh
+
+    - name: Update sshd config to enable AuthenticationMethod pam
+      lineinfile: dest=/etc/ssh/sshd_config
+        regexp=^AuthenticationMethods
+        line="AuthenticationMethods publickey,keyboard-interactive:pam"
+        state=present
+      notify: restart ssh
+
+    - name: Add Google authenticator to PAM
+      lineinfile: dest=/etc/pam.d/sshd
+        line="auth required pam_google_authenticator.so nullok"
+        insertbefore=BOF
+        state=present
+
+    - name: configure PAM to skip common-auth
+      replace: dest=/etc/pam.d/sshd
+        regexp='^@include common-auth'
+        replace="#@include common-auth"
+        state=present
+
+    - name: copy init-google-authenticator script
+      copy:
+        src: files/init-google-authenticator
+        dest: /usr/local/bin/init-google-authenticator
+        owner: root
+        group: root
+        mode: "u=rwx,g=rwx,o=rx"
+
+
+  handlers:
+    - name: restart ssh
+      service: name=ssh state=restarted

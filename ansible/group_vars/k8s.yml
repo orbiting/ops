@@ -1,0 +1,16 @@
+---
+
+hostname: '{{ inventory_hostname }}'
+
+#zsh
+users:
+  - username: patte
+    oh_my_zsh:
+      theme: r_production
+      plugins:
+        - git
+        - kubectl
+  - username: root
+    oh_my_zsh:
+      theme: r_production
+

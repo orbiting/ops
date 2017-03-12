@@ -1,0 +1,2 @@
+*.tfstate
+variables.tf

@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: cms-draft
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: cms-draft
+    spec:
+      containers:
+      - name: cms-draft
+        image: registry.git.project-r.construction/earlybirds/cms-draft
+        ports:
+        - containerPort: 3000
+        env:
+          - name: NODE_ENV
+            value: production
+          - name: PORT
+            value: "3000"
+          - name: SESSION_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: cms-draft-secrets
+                key: SESSION_SECRET
+          - name: GITHUB_CLIENT_ID
+            valueFrom:
+              secretKeyRef:
+                name: cms-draft-secrets
+                key: GITHUB_CLIENT_ID
+          - name: GITHUB_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: cms-draft-secrets
+                key: GITHUB_CLIENT_SECRET
+      imagePullSecrets:
+        - name: project-r-registry-secret

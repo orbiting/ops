@@ -1,0 +1,8 @@
+---
+
+- name: barman for Project R
+  hosts: barman
+  become: true
+
+  roles:
+    - role: barman
