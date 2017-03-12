@@ -1,0 +1,43 @@
+---
+
+- name: letsencrypt postgres for Project R
+  hosts: postgres
+  become: true
+
+  vars:
+    letsencrypt_webroot_path: /
+    letsencrypt_email: admin@project-r.construction
+    #letsencrypt_cert_domains:  # defined in host_vars
+    letsencrypt_renewal_command_args: '--renew-hook "service postgresql restart"'
+    letsencrypt_authenticator: 'standalone'
+    letsencrypt_server: https://acme-staging.api.letsencrypt.org/directory
+
+  #roles:
+  #  - role: ansible-letsencrypt
+
+  tasks:
+    - name: chgrp -R ssl-cert /etc/letsencrypt/live /archive
+      file:
+        path: "{{ item }}"
+        state: directory
+        recurse: yes
+        group: ssl-cert
+      with_items:
+        - /etc/letsencrypt/live
+        - /etc/letsencrypt/archive
+    - name: chmod 750 /etc/letsencrypt/live /archive
+      file:
+        path: "{{ item }}"
+        state: directory
+        mode: 0750
+      with_items:
+        - /etc/letsencrypt/live
+        - /etc/letsencrypt/archive
+    - name: chmod 640 of cert and key
+      file:
+        path: "{{ item }}"
+        mode: 0640
+        follow: true
+      with_items:
+        - "{{ postgresql_ssl_cert_file }}"
+        - "{{ postgresql_ssl_key_file }}"
