@@ -32,7 +32,7 @@ postgresql_pg_hba_custom:
     address: "159.100.253.185/32"
     method: "trust"
 
-postgresql_archive_command: 'rsync -ap --bwlimit=1000 %p barman@barman.project-r.construction:/var/lib/barman/db1.staging/incoming/%f'
+postgresql_archive_command: 'rsync -ap -e "ssh -o StrictHostKeyChecking=no" --bwlimit=1000 %p barman@barman.project-r.construction:/var/lib/barman/db1.staging/incoming/%f'
 
 postgresql_ssh_key_file: "files/id_rsa_db1.staging"
 postgresql_ssh_pub_key_file: "files/id_rsa_db1.staging.pub"
