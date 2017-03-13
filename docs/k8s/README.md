@@ -126,3 +126,5 @@ kubectl get po -o wide --all-namespaces
 - https://hackernoon.com/kubernetes-ingress-controllers-and-traefik-a32648a4ae95#.tvfsr6qlu
 - https://kubernetes.io/docs/user-guide/secrets/#using-secrets-as-environment-variables
 - https://archifleks.github.io/blog/kubernetes-ingress/
+- http://stackoverflow.com/questions/39293441/needed-ports-for-kubernetes-cluster
+- https://coreos.com/kubernetes/docs/latest/kubernetes-networking.html#pod-to-pod-communication
