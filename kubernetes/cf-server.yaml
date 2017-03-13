@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: cf-server
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: cf-server
+    spec:
+      containers:
+      - name: cf-server
+        image: registry.git.project-r.construction/earlybirds/cf_server
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000
+        env:
+          - name: NODE_ENV
+            value: production
+          - name: PORT
+            value: "3000"
+          - name: PUBLIC_URL
+            value: "http://cf.api.project-r.construction"
+          - name: SESSION_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: cf-server-secrets
+                key: SESSION_SECRET
+          - name: DATABASE_URL
+            valueFrom:
+              secretKeyRef:
+                name: cf-server-secrets
+                key: DATABASE_URL
+      imagePullSecrets:
+        - name: project-r-registry-secret

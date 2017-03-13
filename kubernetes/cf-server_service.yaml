@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cf-server
+spec:
+  ports:
+  - port: 80
+    targetPort: 3000
+  selector:
+    app: cf-server
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: cf-server
+spec:
+  rules:
+  - host: cf.api.project-r.construction
+    http:
+      paths:
+      - backend:
+          serviceName: cf-server
+          servicePort: 80

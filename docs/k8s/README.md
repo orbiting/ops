@@ -105,6 +105,15 @@ kubectl apply -f cms-draft.yaml
 kubectl apply -f cms-draft_service.yaml
 ```
 
+#### deploy cf_server
+```
+kubectl create secret generic cf-server-secrets \
+ --from-literal=SESSION_SECRET="" \
+ --from-literal=DATABASE_URL=""
+kubectl apply -f cf_server.yaml
+kubectl apply -f cf_server_service.yaml
+```
+
 
 ## Cheatsheet
 https://kubernetes.io/docs/user-guide/kubectl-cheatsheet/
