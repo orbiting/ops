@@ -1,1 +1,10 @@
-kubectl port-forward --namespace weavescope $(kubectl get pod --all-namespaces --selector=weave-scope-component=app -o jsonpath='{.items..metadata.name}') 4040
+#!/bin/bash
+
+ssh -M -S /tmp/ssh_ctrl_socket_TRAEFIK0 -fN -L 8081:localhost:8080 k8s-worker-edge-0 &&
+ssh -M -S /tmp/ssh_ctrl_socket_TRAEFIK1 -fN -L 8082:localhost:8080 k8s-worker-edge-1 &&
+
+# forward scope
+kubectl port-forward --namespace weavescope $(kubectl get pod --all-namespaces --selector=weave-scope-component=app -o jsonpath='{.items..metadata.name}') 4040 ||
+
+ssh -S /tmp/ssh_ctrl_socket_TRAEFIK0 -O exit k8s-worker-edge-0 ||
+ssh -S /tmp/ssh_ctrl_socket_TRAEFIK1 -O exit k8s-worker-edge-1
