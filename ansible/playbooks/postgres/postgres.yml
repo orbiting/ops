@@ -17,6 +17,7 @@
     postgresql_databases:
       - name: projectr
         owner: projectr
+        uuid_ossp: yes
 
     postgresql_users:
       - name: projectr
