@@ -17,7 +17,7 @@ metadata:
   name: cms-draft
 spec:
   rules:
-  - host: cms-draft.project-r.construction
+  - host: cms-draft.project-r.space
     http:
       paths:
       - backend:

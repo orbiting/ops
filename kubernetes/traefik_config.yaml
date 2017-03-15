@@ -24,6 +24,6 @@ data:
     entryPoint = "https"
     onDemand = true
     onHostRule = true
-    caServer = "https://acme-staging.api.letsencrypt.org/directory"
-    #[[acme.domains]]
-    #main = "project-r.construction"
+    #caServer = "https://acme-staging.api.letsencrypt.org/directory"
+    [[acme.domains]]
+    main = "project-r.space"

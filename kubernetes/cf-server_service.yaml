@@ -15,7 +15,7 @@ metadata:
   name: cf-server
 spec:
   rules:
-  - host: cf.api.project-r.construction
+  - host: api.project-r.space
     http:
       paths:
       - backend:

@@ -15,7 +15,7 @@ metadata:
   name: whoami
 spec:
   rules:
-  - host: whoamii.project-r.construction
+  - host: whoami.project-r.space
     http:
       paths:
       - backend:
