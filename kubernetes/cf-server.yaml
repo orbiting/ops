@@ -21,7 +21,7 @@ spec:
           - name: PORT
             value: "3000"
           - name: PUBLIC_URL
-            value: "http://api.project-r.space"
+            value: "https://api.project-r.space"
           - name: SESSION_SECRET
             valueFrom:
               secretKeyRef:
