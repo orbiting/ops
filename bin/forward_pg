@@ -8,13 +8,18 @@ fi
 
 HOSTNAME=$1
 
-echo "# searching for unused local port..."
-#https://superuser.com/questions/885414/linux-command-get-unused-port
-CHECK="do while"
-while [[ ! -z $CHECK ]]; do
-    PORT=$( shuf -i 55432-60000 -n 1 )
-    CHECK=$(netstat -ap 2>/dev/null | grep $PORT)
-done
+if [ -z "$2" ]
+  then
+    echo "# searching for unused local port..."
+    #https://superuser.com/questions/885414/linux-command-get-unused-port
+    CHECK="do while"
+    while [[ ! -z $CHECK ]]; do
+        PORT=$( shuf -i 55432-60000 -n 1 )
+        CHECK=$(netstat -ap 2>/dev/null | grep $PORT)
+    done
+else
+  PORT=$2
+fi
 
 echo "# connecting to $HOSTNAME via bastion.project-r.construction..."
 #http://stackoverflow.com/questions/2241063/bash-script-to-setup-a-temporary-ssh-tunnel/15198031#15198031
