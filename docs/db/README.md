@@ -2,6 +2,20 @@
 
 Postgres rules our main DB backend.
 
+## Usasge
+Execute `forward_pg` to connect to a DB node and use it locally.
+```
+forward_pg HOST [PORT]
+# if no port is provided a (free) local port between 55432 - 60000 is used.
+
+forward_pg db1.project-r.construction 55432
+# connecting to db1.project-r.construction via bastion.project-r.construction...
+# connection established!
+# use the following command to connect to pg:
+psql -h localhost -p 55432 -U projectr
+```
+
+
 ## Create
 Manually create a new machines via the exoscale web console.
 
